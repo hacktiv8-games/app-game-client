@@ -1,26 +1,23 @@
 <template>
-  <div v-if="(rooms[1])">
-    <tr v-for="(room, index) in rooms" :key="index">
-      <div v-if="(index !== 0)">
-        <th scope="row">{{index}}</th>
-        <td>{{room.name}}</td>
-        <td>{{room.host}}</td>
-        <td>
-            <a href="" class="btn btn-primary btn-sm" @click.prevent="toRoom">masuk</a>
-            <a href="" class="btn btn-danger btn-sm">hapus</a>
-        </td>
-      </div>
-    </tr>
-  </div>
+  <tr>
+    <th scope="row">{{index+1}}</th>
+    <td>{{room.name}}</td>
+    <td>{{room.host}}</td>
+    <td>
+      <a href="" class="btn btn-primary btn-sm" style="margin-right:8px" @click.prevent="toRoom">masuk</a>
+      <a href="" class="btn btn-danger btn-sm">hapus</a>
+    </td>
+  </tr>
 </template>
 
 <script>
 export default {
   name: 'ListRoom',
+  props: ['room', 'index'],
   computed: {
-    rooms () {
-      return this.$store.state.rooms
-    }
+    // rooms () {
+    //   return this.$store.state.rooms
+    // }
   },
   methods: {
     toRoom () {

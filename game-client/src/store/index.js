@@ -13,7 +13,7 @@ export default new Vuex.Store({
     users: [],
     room: '',
     joined: '',
-    rooms: [{ name: '', host: '' }],
+    rooms: [],
     usersJoin: [],
     randomWord: ''
   },

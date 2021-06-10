@@ -27,7 +27,10 @@
         <button class="btn btn-primary act-btn-add-room mb-4" v-on:click="changePage('formAdd')" v-if="isPage === 'listRoom'">Buat Room</button>
         <button class="btn btn-warning act-btn-add-room mb-4" v-on:click="changePage('listRoom')" v-if="isPage === 'formAdd'">List Room</button>
         <!-- add room -->
-        <FormAddRoom v-if="isPage === 'formAdd'"></FormAddRoom>
+        <FormAddRoom
+         v-if="isPage === 'formAdd'"
+         @changePage="changePage"
+         ></FormAddRoom>
         <!-- add room end -->
 
         <!-- list room -->
@@ -43,7 +46,12 @@
               </tr>
             </thead>
             <tbody>
-              <ListRoom></ListRoom>
+              <ListRoom
+                v-for="(room, index) in rooms"
+                :key="room.index"
+                :room="room"
+                :index="index"
+              ></ListRoom>
             </tbody>
           </table>
           <!-- nanti component List room di looping -->
@@ -72,6 +80,10 @@ export default {
   computed: {
     users () {
       return this.$store.state.users
+    },
+
+    rooms () {
+      return this.$store.state.rooms
     }
   },
   methods: {
