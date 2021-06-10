@@ -10,8 +10,8 @@ export default new Vuex.Store({
   },
   actions: {
     generateWord () {
-      let result           = ''
-      let characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+      let result = ''
+      const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
       for (let i = 0; i < 5; i++) {
         result += characters.charAt(Math.floor(Math.random() * characters.length))
       }
