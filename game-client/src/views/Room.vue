@@ -15,7 +15,7 @@
       <div class="tatakan mb-3">
         <p class="soal">{{ word }}</p>
       </div>
-      <input type="text" placeholder="type here">
+      <input type="text" placeholder="type here" v-on:keyup.enter="onEnter" v-model="answer">
       <button v-on:click="giveUp()" class="btn btn-warning mt-3">Menyerah</button>
     </div>
   </div>
@@ -26,7 +26,9 @@ export default {
   name: 'Room',
   data () {
     return {
-      isPlay: true
+      isPlay: true,
+      answer: '',
+      score: 0
     }
   },
   computed: {
@@ -44,9 +46,21 @@ export default {
     },
     startInterval: function (param) {
       this.isPlay = param
-      setInterval(() => {
-        this.$store.dispatch('addWord')
-      }, 3000)
+      let timer = 0
+      const interval = setInterval(() => {
+        if (timer === 5) {
+          clearInterval(interval)
+          this.$store.dispatch('addScore', { username: this.$store.state.username, score: this.score })
+          this.$store.dispatch('addedScore')
+          console.log(this.$store.state.result)
+        } else {
+          this.$store.dispatch('addWord')
+          timer += 1
+        }
+      }, 10000)
+    },
+    onEnter: function () {
+      if (this.answer === this.word) this.score++
     },
     giveUp () {
       this.$router.push({ path: '/home' })

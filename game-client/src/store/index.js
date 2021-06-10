@@ -15,7 +15,8 @@ export default new Vuex.Store({
     joined: '',
     rooms: [{ name: '', host: '' }],
     usersJoin: [],
-    randomWord: ''
+    randomWord: '',
+    result: [{ name: '', score: '' }]
   },
   mutations: {
     setId (state, payload) {
@@ -41,6 +42,9 @@ export default new Vuex.Store({
     },
     setRandomWord (state, payload) {
       state.randomWord = payload
+    },
+    setResult (state, payload) {
+      state.result.push(payload)
     }
   },
   actions: {
@@ -97,8 +101,16 @@ export default new Vuex.Store({
     addedWord ({ commit }) {
       socket.on('clientWord', (payload) => {
         const { randomWord } = payload
-        console.log(randomWord, '<<<')
         commit('setRandomWord', randomWord)
+      })
+    },
+    addScore ({ commit }, payload) {
+      commit('setResult', payload)
+      socket.emit('setScore', payload)
+    },
+    addedScore ({ commit }) {
+      socket.on('clientScore', (payload) => {
+        commit('setResult', payload)
       })
     }
   },
