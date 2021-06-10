@@ -10,7 +10,9 @@ export default new Vuex.Store({
   state: {
     id: '',
     username: '',
-    users: []
+    users: [],
+    room: '',
+    rooms: [{ name: '', host: '' }]
   },
   mutations: {
     setId (state, payload) {
@@ -21,6 +23,12 @@ export default new Vuex.Store({
     },
     setUsers (state, payload) {
       state.users.push(payload)
+    },
+    setRoom (state, payload) {
+      state.room = payload
+    },
+    setRooms (state, payload) {
+      state.rooms.push(payload)
     }
   },
   actions: {
@@ -32,20 +40,31 @@ export default new Vuex.Store({
     //   }
     //   return result
     // },
-    addUser ({ commit }, payload) {
-      commit('setUsername', payload)
-      socket.emit('entry', { username: this.state.username })
-    },
     userConnect ({ commit }) {
       socket.on('connection', () => {
         console.log(`connect with id : ${socket.id}`)
         commit('setId', socket.id)
       })
     },
-    userListen ({ commit }) {
+    addUser ({ commit }, payload) {
+      commit('setUsername', payload)
+      socket.emit('entry', { username: this.state.username })
+    },
+    addedUser ({ commit }) {
       socket.on('clientUser', (payload) => {
         const { username } = payload
         commit('setUsers', username)
+      })
+    },
+    addRoom ({ commit }, payload) {
+      commit('setRoom', payload)
+      socket.emit('createRoom', { name: this.state.room, host: this.state.username })
+    },
+    addedRoom ({ commit }) {
+      socket.on('clientRoom', (payload) => {
+        console.log(payload)
+        // const { room, host } = payload
+        commit('setRooms', payload)
       })
     }
   },
