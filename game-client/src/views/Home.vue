@@ -4,24 +4,10 @@
       <div class="col-5">
         <div class="list-user mb-4">
           <h2>User Login</h2>
-          <div class="shadow-lg p-3 mb-3 bg-white">
+          <div v-for="(user, index) in users" :key="index" class="shadow-lg p-3 mb-3 bg-white">
             <div class="row">
                 <div class="col">
-                  <h2>Ade</h2>
-                </div>
-            </div>
-          </div>
-          <div class="shadow-lg p-3 mb-3 bg-white">
-            <div class="row">
-                <div class="col">
-                  <h2>Erick</h2>
-                </div>
-            </div>
-          </div>
-          <div class="shadow-lg p-3 mb-3 bg-white">
-            <div class="row">
-                <div class="col">
-                  <h2>Oki Husni</h2>
+                  <h2>{{ user }}</h2>
                 </div>
             </div>
           </div>
@@ -52,8 +38,7 @@
               <tr>
                 <th scope="col">No</th>
                 <th scope="col">Nama Room</th>
-                <th scope="col">Jumlah Pemain</th>
-                <th scope="col">Jumlah Soal</th>
+                <th scope="col">Host</th>
                 <th scope="col">Action</th>
               </tr>
             </thead>
@@ -84,10 +69,18 @@ export default {
     FormAddRoom,
     ListRoom
   },
+  computed: {
+    users () {
+      return this.$store.state.users
+    }
+  },
   methods: {
     changePage (param) {
       this.isPage = param
     }
+  },
+  mounted () {
+    this.$store.dispatch('addedRoom')
   }
 }
 </script>

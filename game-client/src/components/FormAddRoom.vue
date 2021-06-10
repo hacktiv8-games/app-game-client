@@ -1,13 +1,13 @@
 <template>
     <div class="addRoom">
-        <form>
+        <form @submit.prevent="addRoom">
           <div class="mb-2 row">
             <label class="col-sm-3 col-form-label">Nama Room</label>
             <div class="col-sm-8">
-              <input type="text" class="form-control" placeholder="Masukan nama room">
+              <input type="text" class="form-control" placeholder="Masukan nama room" v-model="room">
             </div>
           </div>
-          <div class="mb-2 row">
+          <!-- <div class="mb-2 row">
             <label class="col-sm-3 col-form-label">Jumlah Pemain</label>
             <div class="col-sm-8">
               <input type="number" class="form-control" placeholder="Masukan jumlah pemain. (minimal 2)">
@@ -18,7 +18,7 @@
             <div class="col-sm-8">
               <input type="number" class="form-control" placeholder="Masukan jumlah soal">
             </div>
-          </div>
+          </div> -->
           <div class="mb-2 row">
             <label class="col-sm-3 col-form-label"></label>
             <div class="col-sm-8">
@@ -32,7 +32,17 @@
 
 <script>
 export default {
-  name: 'FormAddRoom'
+  name: 'FormAddRoom',
+  data () {
+    return {
+      room: ''
+    }
+  },
+  methods: {
+    addRoom () {
+      this.$store.dispatch('addRoom', this.room)
+    }
+  }
 }
 </script>
 
