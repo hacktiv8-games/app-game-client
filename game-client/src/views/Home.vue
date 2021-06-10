@@ -81,6 +81,7 @@ export default {
   },
   mounted () {
     this.$store.dispatch('addedRoom')
+    this.$store.dispatch('joinedRoom')
   }
 }
 </script>

@@ -2,19 +2,18 @@
   <div style="background-color:white; width:100%; height:100vh;">
     <div class="list-player p-3">
       <h2>List Player:</h2>
-      <h3>oki</h3>
-      <h3>rendy</h3>
-      <h3>ade</h3>
-      <h3>erick</h3>
+      <div v-for="(user, index) in usersJoin" :key="index">
+        <h3>{{ user }}</h3>
+      </div>
     </div>
     <button class="btn-keluar">Keluar</button>
     <div v-if="isPlay" class="star-btn">
       <h1>Are you ready?</h1>
-      <button v-on:click="changeIsPlay(false)" class="btn-start">Start</button>
+      <button v-on:click="startInterval(false)" class="btn-start">Start</button>
     </div>
     <div v-if="!isPlay" class="play-game">
       <div class="tatakan mb-3">
-        <p class="soal">"Jjfalsd312"</p>
+        <p class="soal">{{ word }}</p>
       </div>
       <input type="text" placeholder="type here">
       <button v-on:click="giveUp()" class="btn btn-warning mt-3">Menyerah</button>
@@ -30,14 +29,31 @@ export default {
       isPlay: true
     }
   },
+  computed: {
+    usersJoin () {
+      return this.$store.state.usersJoin
+    },
+    word () {
+      return this.$store.state.randomWord
+    }
+  },
   methods: {
     changeIsPlay (param) {
       this.isPlay = param
+      this.$store.dispatch('addWord')
     },
-
+    startInterval: function (param) {
+      this.isPlay = param
+      setInterval(() => {
+        this.$store.dispatch('addWord')
+      }, 3000)
+    },
     giveUp () {
       this.$router.push({ path: '/home' })
     }
+  },
+  mounted () {
+    this.$store.dispatch('addedWord')
   }
 }
 </script>

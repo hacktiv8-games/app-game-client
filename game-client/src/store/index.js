@@ -12,7 +12,10 @@ export default new Vuex.Store({
     username: '',
     users: [],
     room: '',
-    rooms: [{ name: '', host: '' }]
+    joined: '',
+    rooms: [{ name: '', host: '' }],
+    usersJoin: [],
+    randomWord: ''
   },
   mutations: {
     setId (state, payload) {
@@ -29,17 +32,26 @@ export default new Vuex.Store({
     },
     setRooms (state, payload) {
       state.rooms.push(payload)
+    },
+    setJoined (state, payload) {
+      state.joined = payload
+    },
+    setUsersJoin (state, payload) {
+      state.usersJoin.push(payload)
+    },
+    setRandomWord (state, payload) {
+      state.randomWord = payload
     }
   },
   actions: {
-    // generateWord () {
-    //   let result = ''
-    //   let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
-    //   for (let i = 0; i < 5; i++) {
-    //     result += characters.charAt(Math.floor(Math.random() * characters.length))
-    //   }
-    //   return result
-    // },
+    generateWord ({ commit }) {
+      let result = ''
+      const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+      for (let i = 0; i < 5; i++) {
+        result += characters.charAt(Math.floor(Math.random() * characters.length))
+      }
+      commit('setRandomWord', result)
+    },
     userConnect ({ commit }) {
       socket.on('connection', () => {
         console.log(`connect with id : ${socket.id}`)
@@ -65,6 +77,28 @@ export default new Vuex.Store({
         console.log(payload)
         // const { room, host } = payload
         commit('setRooms', payload)
+      })
+    },
+    joinRoom ({ commit }) {
+      socket.emit('joinRoom', { toJoin: this.state.room, toLeave: this.state.joined, username: this.state.username })
+      commit('setJoined', this.state.room)
+    },
+    joinedRoom ({ commit }) {
+      socket.on('clientJoin', (payload) => {
+        console.log(payload)
+        // const { room, host } = payload
+        commit('setUsersJoin', payload)
+      })
+    },
+    addWord ({ dispatch }) {
+      dispatch('generateWord')
+      socket.emit('createWord', { randomWord: this.state.randomWord })
+    },
+    addedWord ({ commit }) {
+      socket.on('clientWord', (payload) => {
+        const { randomWord } = payload
+        console.log(randomWord, '<<<')
+        commit('setRandomWord', randomWord)
       })
     }
   },
