@@ -41,6 +41,7 @@ export default {
   methods: {
     addRoom () {
       this.$store.dispatch('addRoom', this.room)
+      this.$emit('changePage', 'listRoom')
     }
   }
 }
