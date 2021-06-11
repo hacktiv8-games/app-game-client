@@ -16,7 +16,8 @@ export default new Vuex.Store({
     rooms: [{ name: '', host: '' }],
     usersJoin: [],
     randomWord: '',
-    result: [{ name: '', score: '' }]
+    result: [{ name: '', score: '' }],
+    timer: 0
   },
   mutations: {
     setId (state, payload) {
@@ -45,6 +46,9 @@ export default new Vuex.Store({
     },
     setResult (state, payload) {
       state.result.push(payload)
+    },
+    setTimer (state, payload) {
+      state.timer = payload
     }
   },
   actions: {
@@ -96,7 +100,7 @@ export default new Vuex.Store({
     },
     addWord ({ dispatch }) {
       dispatch('generateWord')
-      socket.emit('createWord', { randomWord: this.state.randomWord })
+      socket.emit('createWord', { randomWord: this.state.randomWord }, this.state.room)
     },
     addedWord ({ commit }) {
       socket.on('clientWord', (payload) => {
@@ -106,11 +110,21 @@ export default new Vuex.Store({
     },
     addScore ({ commit }, payload) {
       commit('setResult', payload)
-      socket.emit('setScore', payload)
+      socket.emit('setScore', payload, this.state.room)
     },
     addedScore ({ commit }) {
       socket.on('clientScore', (payload) => {
         commit('setResult', payload)
+      })
+    },
+    addTimer ({ commit }, payload) {
+      commit('setTimer', payload)
+      socket.emit('serverTimer', { timer: payload }, this.state.room)
+    },
+    addedTimer ({ commit }) {
+      socket.on('clientTimer', (payload) => {
+        // const { timer } = payload
+        // commit('setTimer', timer)
       })
     }
   },
