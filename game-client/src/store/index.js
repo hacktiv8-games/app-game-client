@@ -2,7 +2,8 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import { io } from 'socket.io-client'
 
-const socket = io('http://localhost:3000')
+// const socket = io('http://localhost:3000')
+const socket = io('https://agile-ketik-cepat.herokuapp.com')
 
 Vue.use(Vuex)
 

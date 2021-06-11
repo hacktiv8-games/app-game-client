@@ -6,7 +6,6 @@
         <h3>{{ user }}</h3>
       </div>
     </div>
-    <button class="btn-keluar">Keluar</button>
     <div v-if="isPlay" class="star-btn">
       <h1>Are you ready?</h1>
       <button v-on:click="startInterval(false)" class="btn-start">Start</button>

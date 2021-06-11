@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <h1>JUDUL: menghitung cepat</h1>
+    <h1>Lomba Mengetik Cepatttt</h1>
     <form>
       <div class="mb-3">
         <input type="text" class="form-control" placeholder="USERNAME" v-model="username">
@@ -12,6 +12,7 @@
 </template>
 
 <script>
+import Toastify from 'toastify-js'
 export default {
   name: 'Register',
   data () {
@@ -23,6 +24,13 @@ export default {
     addUser () {
       this.$store.dispatch('addUser', this.username)
       this.$router.push({ name: 'Home' })
+      Toastify({
+        text: 'Hi.. selamat bermain',
+        duration: 3000,
+        gravity: 'bottom', // `top` or `bottom`
+        position: 'right', // `left`, `center` or `right`
+        backgroundColor: '#3CB371'
+      }).showToast()
     }
   },
   mounted () {

@@ -2,7 +2,9 @@
   <div class="container">
     <div class="row">
       <div class="col-5">
-        <div class="list-user mb-4">
+        <button v-on:click="changeGuide(true)" v-if="!isGuide" class="btn btn-primary">User Guide</button>
+        <button v-on:click="changeGuide(false)" v-if="isGuide" class="btn btn-primary">Back</button>
+        <div class="list-user mb-4 mt-4" v-if="!isGuide">
           <h2>User Login</h2>
           <div v-for="(user, index) in users" :key="index" class="shadow-lg p-3 mb-3 bg-white">
             <div class="row">
@@ -12,13 +14,7 @@
             </div>
           </div>
         </div>
-        <h1>JUDUL: Peraturan</h1>
-        <ul>
-          <li>1. Buat room terlebih dahulu</li>
-          <li>2. Minimal permainan dimainakn 2 orang maksimal 5</li>
-          <li>3. Game akan dimulai ketika ketika pemain sudah ada 2 dan di klic start</li>
-          <li>4. akan ada beberapa kata random siapa yang lebih cepet menyelesaikan pemainan dia pemenanngya</li>
-        </ul>
+        <Guide v-if="isGuide"></Guide>
       </div>
 
       <div class="col-1"></div>
@@ -35,7 +31,7 @@
 
         <!-- list room -->
         <div class="list-room" v-if="isPage === 'listRoom'">
-          <h1>List Room:</h1>
+          <h2>List Room:</h2>
           <table class="table">
             <thead>
               <tr>
@@ -63,6 +59,7 @@
 </template>
 
 <script>
+import Guide from '../components/Guide.vue'
 import FormAddRoom from '../components/FormAddRoom.vue'
 import ListRoom from '../components/ListRoom.vue'
 
@@ -70,10 +67,12 @@ export default {
   name: 'Home',
   data () {
     return {
+      isGuide: false,
       isPage: 'listRoom'
     }
   },
   components: {
+    Guide,
     FormAddRoom,
     ListRoom
   },
@@ -89,6 +88,10 @@ export default {
   methods: {
     changePage (param) {
       this.isPage = param
+    },
+
+    changeGuide (param) {
+      this.isGuide = param
     }
   },
   mounted () {
