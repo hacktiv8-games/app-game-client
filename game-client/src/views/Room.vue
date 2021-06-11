@@ -17,6 +17,9 @@
       </div>
       <input type="text" placeholder="type here" v-on:keyup.enter="onEnter" v-model="answer">
       <button v-on:click="giveUp()" class="btn btn-warning mt-3">Menyerah</button>
+      <ul>
+        <li v-for="(result, i) in results" :key="i">{{ result.username }}: {{ result.score }}</li>
+      </ul>
     </div>
   </div>
 </template>
@@ -37,6 +40,12 @@ export default {
     },
     word () {
       return this.$store.state.randomWord
+    },
+    timer () {
+      return this.$store.state.timer
+    },
+    results () {
+      return this.$store.state.result
     }
   },
   methods: {
@@ -48,26 +57,28 @@ export default {
       this.isPlay = param
       let timer = 0
       const interval = setInterval(() => {
+        this.$store.dispatch('addedTimer')
         if (timer === 5) {
-          clearInterval(interval)
           this.$store.dispatch('addScore', { username: this.$store.state.username, score: this.score })
-          this.$store.dispatch('addedScore')
-          console.log(this.$store.state.result)
+          clearInterval(interval)
+          // this.$store.dispatch('addedScore')
         } else {
           this.$store.dispatch('addWord')
-          timer += 1
+          timer++
+          // this.$store.dispatch('addTimer', this.timer + 1)
         }
-      }, 10000)
+      }, 3000)
     },
     onEnter: function () {
       if (this.answer === this.word) this.score++
     },
     giveUp () {
-      this.$router.push({ path: '/home' })
+      this.$store.dispatch('addedScore')
     }
   },
   mounted () {
     this.$store.dispatch('addedWord')
+    // this.$store.dispatch('addedScore')
   }
 }
 </script>
